@@ -22,7 +22,6 @@ class LibraryGrid extends StatelessWidget {
                     childAspectRatio: 1 / 1.5,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
-                    // mainAxisExtent: MediaQuery.of(context).size.width / 2,
                   ),
                   itemBuilder: (ctx, index) {
                     return InkWell(

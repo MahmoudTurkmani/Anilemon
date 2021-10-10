@@ -3,16 +3,24 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AnimeList with ChangeNotifier {
   List<dynamic>? _animeList = [];
   List<dynamic>? _libraryList = [];
+  bool isInit = false;
 
   List<dynamic> get animeList {
     return [..._animeList!];
   }
 
   List<dynamic> get libraryList {
+    // If this is the first time loading the
+    // app, check the storage for favs
+    if (!isInit) {
+      fetchLibraryPrefs();
+      isInit = true;
+    }
     return [..._libraryList!];
   }
 
@@ -51,14 +59,40 @@ class AnimeList with ChangeNotifier {
     }
   }
 
-  void addToLibrary(String id) {
+  Future<void> addToLibrary(String id) async {
+    // Is it in the library already?
     final index = _libraryList!.indexWhere((element) => element[0]['id'] == id);
+    final prefs = await SharedPreferences.getInstance();
     if (index == -1) {
+      // add to the library and store on the device
       _libraryList!
           .add(animeList.where((element) => element['id'] == id).toList());
+      await prefs.setString(
+          "$id",
+          json.encode(
+              animeList.where((element) => element['id'] == id).toList()));
     } else {
+      // remove it from both the library and the storage
       _libraryList!.removeAt(index);
+      await prefs.remove("$id");
     }
     notifyListeners();
+    return;
+  }
+
+  Future<void> fetchLibraryPrefs() async {
+    // open the storage and get the keys
+    final prefs = await SharedPreferences.getInstance();
+    final values = prefs.getKeys().toList();
+    if (values.isEmpty) {
+      return;
+    }
+    // Add the items in storage to the library
+    values.forEach((key) {
+      print(prefs.get(key));
+      _libraryList!.add(json.decode(prefs.get(key).toString()));
+    });
+    notifyListeners();
+    return;
   }
 }
