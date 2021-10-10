@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/anime_list.dart';
+import '../widgets/watch_show_button.dart';
 
 class AnimeDetailsScreen extends StatelessWidget {
   static const String routeName = '/anime-details';
@@ -71,10 +72,8 @@ class AnimeDetailsScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      ElevatedButton.icon(
-                        onPressed: () {},
-                        label: Text('Start Watching'),
-                        icon: Icon(Icons.open_in_new),
+                      WatchShowButton(
+                        title: details![0]['attributes']['slug'].toString(),
                       ),
                       ElevatedButton(
                         onPressed: () {},

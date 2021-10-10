@@ -89,7 +89,6 @@ class AnimeList with ChangeNotifier {
     }
     // Add the items in storage to the library
     values.forEach((key) {
-      print(prefs.get(key));
       _libraryList!.add(json.decode(prefs.get(key).toString()));
     });
     notifyListeners();
