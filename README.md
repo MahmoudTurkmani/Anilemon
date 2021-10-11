@@ -1,16 +1,18 @@
-# anilemon
+# Anilemon
 
-A new Flutter project.
+A small app to keep track of and watch your favorite anime.
 
-## Getting Started
+# Features
 
-This project is a starting point for a Flutter application.
+- Save anime that you are interested in in your library
+- Open the website you wish to watch the anime on from the app itself
+- Keep track of which episode you're on
 
-A few resources to get you started if this is your first Flutter project:
+# Request Changes/Improvements
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+You can request changes/improvements from me by reaching out to me on my discord `Pumpkin Person#2356`
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Pull requests
+
+You are more than welcome to do pull requests. I'll accept them as long as they are readable and their purpose
+is clearly stated.
