@@ -106,28 +106,28 @@ class AnimeList with ChangeNotifier {
     return;
   }
 
-  void setRating(String id, int rating) async {
+  void setProperty(String property, String id, int value) async {
     final prefs = await SharedPreferences.getInstance();
-    final List<Map<String, dynamic>> oldValues = prefs.get('ratings') == null
+    final List<Map<String, dynamic>> oldValues = prefs.get('$property') == null
         ? []
         : new List<Map<String, dynamic>>.from(
-            json.decode(prefs.get('ratings') as String),
+            json.decode(prefs.get('$property') as String),
           );
     int index = oldValues.indexWhere((element) {
       return element.containsKey(id);
     });
     index == -1
-        ? oldValues.add({'$id': rating})
-        : oldValues[index] = {'$id': rating};
-    prefs.setString('ratings', json.encode(oldValues));
+        ? oldValues.add({'$id': value})
+        : oldValues[index] = {'$id': value};
+    prefs.setString('$property', json.encode(oldValues));
   }
 
-  Future<int> getRating(String id) async {
+  Future<int> getProperty(String property, String id) async {
     final prefs = await SharedPreferences.getInstance();
-    final List<Map<String, dynamic>> oldValues = prefs.get('ratings') == null
+    final List<Map<String, dynamic>> oldValues = prefs.get('property') == null
         ? []
         : new List<Map<String, dynamic>>.from(
-            json.decode(prefs.get('ratings') as String),
+            json.decode(prefs.get('property') as String),
           );
     if (oldValues.isEmpty) {
       return 0;

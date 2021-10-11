@@ -3,16 +3,22 @@ import 'package:provider/provider.dart';
 
 import '../../providers/anime_list.dart';
 
-class RatingButton extends StatelessWidget {
+class StatusButton extends StatelessWidget {
   final String id;
-  const RatingButton(this.id);
+  const StatusButton(
+    this.id, {
+    Key? key,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('Rating'),
+        Text('Status'),
         IconButton(
           onPressed: () async {
+            final values = ["plan to watch", "watching", "dropped", "on hold"];
+            //  mapped as  [       0       ,     1     ,     2    ,     3    ]
             await showDialog(
               context: context,
               builder: (ctx) => SimpleDialog(
@@ -21,11 +27,12 @@ class RatingButton extends StatelessWidget {
                     child: Wrap(
                       direction: Axis.horizontal,
                       spacing: 3,
-                      children: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                      children: values
                           .map(
                             (element) => ElevatedButton(
                               onPressed: () {
-                                Navigator.of(ctx).pop(element);
+                                Navigator.of(ctx).pop(values
+                                    .indexWhere((item) => item == element));
                               },
                               child: Text('$element'),
                             ),
@@ -41,16 +48,16 @@ class RatingButton extends StatelessWidget {
                   return;
                 }
                 Provider.of<AnimeList>(context, listen: false)
-                    .setProperty('ratings', id, value);
+                    .setProperty('watchStatus', id, value);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Show rating successfully added'),
+                    content: Text('Watch status successfully updated'),
                   ),
                 );
               },
             );
           },
-          icon: Icon(Icons.thumb_up, color: Colors.blue),
+          icon: Icon(Icons.movie, color: Colors.black),
         ),
       ],
     );

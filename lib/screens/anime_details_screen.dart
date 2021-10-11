@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
 
-// import '../providers/anime_list.dart';
 import '../widgets/watch_show_button.dart';
 import '../widgets/buttons/rating_button.dart';
 import '../widgets/buttons/favorite_button.dart';
+import '../widgets/buttons/eps_watched_button.dart';
+import '../widgets/buttons/status_button.dart';
 
 class AnimeDetailsScreen extends StatelessWidget {
   static const String routeName = '/anime-details';
@@ -55,9 +55,9 @@ class AnimeDetailsScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          buildButton(Icons.movie, 'Status', () {}),
-                          buildButton(
-                              Icons.remove_red_eye, 'Eps watched', () {}),
+                          StatusButton(id!),
+                          EpsWatchedButton(
+                              id!, details![0]['attributes']['episodeCount']),
                           RatingButton(id!),
                           FavoriteButton(id!),
                         ],
@@ -101,18 +101,6 @@ class AnimeDetailsScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget buildButton(IconData icon, String label, VoidCallback func) {
-    return Column(
-      children: [
-        Text('$label'),
-        IconButton(
-          onPressed: func,
-          icon: Icon(icon, color: Colors.black),
-        ),
-      ],
     );
   }
 
