@@ -83,7 +83,7 @@ class AnimeList with ChangeNotifier {
   Future<void> fetchLibraryPrefs() async {
     // open the storage and get the keys
     final prefs = await SharedPreferences.getInstance();
-    final values = prefs.getKeys().toList();
+    final values = prefs.getKeys();
     if (values.isEmpty) {
       return;
     }
@@ -93,5 +93,41 @@ class AnimeList with ChangeNotifier {
     });
     notifyListeners();
     return;
+  }
+
+  void setRating(String id, int rating) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<Map<String, dynamic>> oldValues = prefs.get('ratings') == null
+        ? []
+        : new List<Map<String, dynamic>>.from(
+            json.decode(prefs.get('ratings') as String),
+          );
+    int index = oldValues.indexWhere((element) {
+      return element.containsKey(id);
+    });
+    index == -1
+        ? oldValues.add({'$id': rating})
+        : oldValues[index] = {'$id': rating};
+    prefs.setString('ratings', json.encode(oldValues));
+  }
+
+  Future<int> getRating(String id) async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<Map<String, dynamic>> oldValues = prefs.get('ratings') == null
+        ? []
+        : new List<Map<String, dynamic>>.from(
+            json.decode(prefs.get('ratings') as String),
+          );
+    if (oldValues.isEmpty) {
+      return 0;
+    }
+    int index = oldValues.indexWhere((element) {
+      return element.containsKey(id);
+    });
+    if (index == -1) {
+      return 0;
+    } else {
+      return oldValues[index].values.first;
+    }
   }
 }

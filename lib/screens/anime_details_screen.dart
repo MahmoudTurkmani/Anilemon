@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 
-import '../providers/anime_list.dart';
+// import '../providers/anime_list.dart';
 import '../widgets/watch_show_button.dart';
+import '../widgets/buttons/rating_button.dart';
+import '../widgets/buttons/favorite_button.dart';
 
 class AnimeDetailsScreen extends StatelessWidget {
   static const String routeName = '/anime-details';
@@ -56,20 +58,8 @@ class AnimeDetailsScreen extends StatelessWidget {
                           buildButton(Icons.movie, 'Status', () {}),
                           buildButton(
                               Icons.remove_red_eye, 'Eps watched', () {}),
-                          buildButton(Icons.thumb_up, 'Rating', () {}),
-                          Consumer<AnimeList>(
-                            builder: (_, animeList, ch) {
-                              return buildButton(
-                                animeList.inLibrary(id!)
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                'Add to favs',
-                                () => animeList.addToLibrary(
-                                  details![0]['id'],
-                                ),
-                              );
-                            },
-                          ),
+                          RatingButton(id!),
+                          FavoriteButton(id!),
                         ],
                       ),
                       WatchShowButton(
