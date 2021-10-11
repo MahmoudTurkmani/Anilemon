@@ -63,18 +63,25 @@ class AnimeList with ChangeNotifier {
     // Is it in the library already?
     final index = _libraryList!.indexWhere((element) => element[0]['id'] == id);
     final prefs = await SharedPreferences.getInstance();
+    final List<Map<String, dynamic>> values =
+        new List<Map<String, dynamic>>.from(
+      json.decode(prefs.get('library') as String),
+    );
+    int prefsIndex = values.indexWhere((element) {
+      return element.containsKey(id);
+    });
     if (index == -1) {
       // add to the library and store on the device
       _libraryList!
           .add(animeList.where((element) => element['id'] == id).toList());
-      await prefs.setString(
-          "$id",
-          json.encode(
-              animeList.where((element) => element['id'] == id).toList()));
+      values.add(
+          {"$id": animeList.where((element) => element['id'] == id).toList()});
+      await prefs.setString('library', json.encode(values));
     } else {
       // remove it from both the library and the storage
       _libraryList!.removeAt(index);
-      await prefs.remove("$id");
+      values.removeAt(prefsIndex);
+      await prefs.setString('library', json.encode(values));
     }
     notifyListeners();
     return;
@@ -83,13 +90,17 @@ class AnimeList with ChangeNotifier {
   Future<void> fetchLibraryPrefs() async {
     // open the storage and get the keys
     final prefs = await SharedPreferences.getInstance();
-    final values = prefs.getKeys();
+    final List<Map<String, dynamic>> values = prefs.get('library') == null
+        ? []
+        : new List<Map<String, dynamic>>.from(
+            json.decode(prefs.get('library') as String),
+          );
     if (values.isEmpty) {
       return;
     }
     // Add the items in storage to the library
-    values.forEach((key) {
-      _libraryList!.add(json.decode(prefs.get(key).toString()));
+    values.forEach((element) {
+      _libraryList!.add(element.values.first);
     });
     notifyListeners();
     return;
