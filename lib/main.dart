@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import './screens/main_menu_screen.dart';
 import './screens/search_screen.dart';
 import './screens/search_results_screen.dart';
+import 'screens/settings_screen.dart';
 import './providers/anime_list.dart';
 
 void main() {
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
           '/': (ctx) => MainMenu(),
           SearchScreen.routeName: (ctx) => SearchScreen(),
           SearchResultScreen.routeName: (ctx) => SearchResultScreen(),
+          SettingsScreen.routeName: (ctx) => SettingsScreen(),
         },
       ),
     );

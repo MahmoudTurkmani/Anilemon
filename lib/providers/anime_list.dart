@@ -63,10 +63,11 @@ class AnimeList with ChangeNotifier {
     // Is it in the library already?
     final index = _libraryList!.indexWhere((element) => element[0]['id'] == id);
     final prefs = await SharedPreferences.getInstance();
-    final List<Map<String, dynamic>> values =
-        new List<Map<String, dynamic>>.from(
-      json.decode(prefs.get('library') as String),
-    );
+    final List<Map<String, dynamic>> values = prefs.get('library') == null
+        ? []
+        : new List<Map<String, dynamic>>.from(
+            json.decode(prefs.get('library') as String),
+          );
     int prefsIndex = values.indexWhere((element) {
       return element.containsKey(id);
     });
@@ -96,6 +97,8 @@ class AnimeList with ChangeNotifier {
             json.decode(prefs.get('library') as String),
           );
     if (values.isEmpty) {
+      _libraryList = [];
+      notifyListeners();
       return;
     }
     // Add the items in storage to the library
@@ -120,6 +123,7 @@ class AnimeList with ChangeNotifier {
         ? oldValues.add({'$id': value})
         : oldValues[index] = {'$id': value};
     prefs.setString('$property', json.encode(oldValues));
+    notifyListeners();
   }
 
   Future<int> getProperty(String property, String id) async {
@@ -140,5 +144,13 @@ class AnimeList with ChangeNotifier {
     } else {
       return oldValues[index].values.first;
     }
+  }
+
+  Future<void> clearData() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    fetchLibraryPrefs();
+    notifyListeners();
+    return;
   }
 }
