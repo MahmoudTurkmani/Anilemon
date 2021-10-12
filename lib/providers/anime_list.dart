@@ -128,10 +128,10 @@ class AnimeList with ChangeNotifier {
 
   Future<int> getProperty(String property, String id) async {
     final prefs = await SharedPreferences.getInstance();
-    final List<Map<String, dynamic>> oldValues = prefs.get('property') == null
+    final List<Map<String, dynamic>> oldValues = prefs.get('$property') == null
         ? []
         : new List<Map<String, dynamic>>.from(
-            json.decode(prefs.get('property') as String),
+            json.decode(prefs.get('$property') as String),
           );
     if (oldValues.isEmpty) {
       return 0;

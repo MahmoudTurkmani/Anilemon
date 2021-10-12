@@ -17,8 +17,14 @@ class StatusButton extends StatelessWidget {
         Text('Status'),
         IconButton(
           onPressed: () async {
-            final values = ["plan to watch", "watching", "dropped", "on hold"];
-            //  mapped as  [       0       ,     1     ,     2    ,     3    ]
+            final values = [
+              "plan to watch",
+              "watching",
+              "completed",
+              "dropped",
+              "on hold"
+            ];
+            // mapped as  [0, 1, 2, 3, 4]
             await showDialog(
               context: context,
               builder: (ctx) => SimpleDialog(

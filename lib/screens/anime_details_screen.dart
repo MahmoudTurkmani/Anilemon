@@ -5,12 +5,13 @@ import '../widgets/buttons/rating_button.dart';
 import '../widgets/buttons/favorite_button.dart';
 import '../widgets/buttons/eps_watched_button.dart';
 import '../widgets/buttons/status_button.dart';
+import '../widgets/info/details_table.dart';
+import '../widgets/info/user_details_table.dart';
 
 class AnimeDetailsScreen extends StatelessWidget {
   static const String routeName = '/anime-details';
   final String? id;
   final List<dynamic>? details;
-  int count = 0;
 
   AnimeDetailsScreen({
     @required this.id,
@@ -56,8 +57,8 @@ class AnimeDetailsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           StatusButton(id!),
-                          EpsWatchedButton(
-                              id!, details![0]['attributes']['episodeCount']),
+                          EpsWatchedButton(id!,
+                              details![0]['attributes']['episodeCount'] ?? 0),
                           RatingButton(id!),
                           FavoriteButton(id!),
                         ],
@@ -69,29 +70,11 @@ class AnimeDetailsScreen extends StatelessWidget {
                         onPressed: () {},
                         child: Text('+1'),
                       ),
-                      // Outsource this too into another widget
-                      Table(
-                        border: TableBorder.all(
-                          width: 0.2,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        defaultVerticalAlignment:
-                            TableCellVerticalAlignment.middle,
-                        children: [
-                          buildRow(context, 'Average Rating',
-                              '${details![0]['attributes']['averageRating']}/100',
-                              isFirst: true),
-                          buildRow(context, 'Release Date',
-                              '${details![0]['attributes']['startDate']}'),
-                          buildRow(context, 'Episode Count',
-                              '${details![0]['attributes']['episodeCount']}'),
-                          buildRow(context, 'Age Rating',
-                              '${details![0]['attributes']['ageRating']}'),
-                          buildRow(context, 'Type',
-                              '${details![0]['attributes']['showType']}',
-                              isLast: true),
-                        ],
-                      )
+                      UserDetailsTable(id!),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      DetailsTable(details!),
                     ],
                   ),
                 );
@@ -101,51 +84,6 @@ class AnimeDetailsScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  TableRow buildRow(BuildContext context, String label, String detail,
-      {bool isFirst = false, bool isLast = false}) {
-    count++;
-    return TableRow(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: isFirst ? Radius.circular(5) : Radius.zero,
-          topRight: isFirst ? Radius.circular(5) : Radius.zero,
-          bottomLeft: isLast ? Radius.circular(5) : Radius.zero,
-          bottomRight: isLast ? Radius.circular(5) : Radius.zero,
-        ),
-        color: count.isOdd
-            ? Theme.of(context).colorScheme.primaryVariant
-            : Theme.of(context).colorScheme.secondary,
-      ),
-      children: <Widget>[
-        TableCell(
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Text(
-              '$label',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-        TableCell(
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Text(
-              '$detail',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.end,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
