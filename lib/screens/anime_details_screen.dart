@@ -7,6 +7,7 @@ import '../widgets/buttons/eps_watched_button.dart';
 import '../widgets/buttons/status_button.dart';
 import '../widgets/info/details_table.dart';
 import '../widgets/info/user_details_table.dart';
+import '../widgets/info/synopsis.dart';
 
 class AnimeDetailsScreen extends StatelessWidget {
   static const String routeName = '/anime-details';
@@ -76,6 +77,10 @@ class AnimeDetailsScreen extends StatelessWidget {
                         height: 8,
                       ),
                       DetailsTable(details!),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Synopsis(details![0]['attributes']['synopsis']),
                     ],
                   ),
                 );
