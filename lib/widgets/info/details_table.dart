@@ -16,6 +16,9 @@ class _DetailsTableState extends State<DetailsTable> {
   @override
   Widget build(BuildContext context) {
     count = 0;
+    // will be used in case the show doesn't have a definite number of episodes
+    double epCount = widget.details[0]['attributes']['totalLength'] /
+        widget.details[0]['attributes']['episodeLength'];
     return Table(
       border: TableBorder.all(
         width: 0.2,
@@ -28,8 +31,9 @@ class _DetailsTableState extends State<DetailsTable> {
             isFirst: true),
         buildRow(context, 'Release Date',
             '${widget.details[0]['attributes']['startDate']}'),
+        // if has count, return it. Otherwise, showtime/length of one ep
         buildRow(context, 'Episode Count',
-            '${widget.details[0]['attributes']['episodeCount']}'),
+            '${widget.details[0]['attributes']['episodeCount'] ?? epCount.toStringAsFixed(0)}'),
         buildRow(context, 'Age Rating',
             '${widget.details[0]['attributes']['ageRating']}'),
         buildRow(

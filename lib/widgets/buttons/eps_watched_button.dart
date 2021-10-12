@@ -48,7 +48,7 @@ class EpsWatchedButton extends StatelessWidget {
                 }
                 Provider.of<AnimeList>(context, listen: false)
                     .setProperty('eps', id, value);
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Progress saved'),

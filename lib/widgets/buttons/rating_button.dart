@@ -42,7 +42,7 @@ class RatingButton extends StatelessWidget {
                 }
                 Provider.of<AnimeList>(context, listen: false)
                     .setProperty('ratings', id, value);
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Show rating successfully added'),

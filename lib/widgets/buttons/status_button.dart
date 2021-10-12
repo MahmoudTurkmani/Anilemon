@@ -55,6 +55,7 @@ class StatusButton extends StatelessWidget {
                 }
                 Provider.of<AnimeList>(context, listen: false)
                     .setProperty('watchStatus', id, value);
+                ScaffoldMessenger.of(context).removeCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Watch status successfully updated'),
