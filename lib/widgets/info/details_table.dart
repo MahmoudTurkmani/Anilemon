@@ -17,8 +17,10 @@ class _DetailsTableState extends State<DetailsTable> {
   Widget build(BuildContext context) {
     count = 0;
     // will be used in case the show doesn't have a definite number of episodes
-    double epCount = widget.details[0]['attributes']['totalLength'] /
-        widget.details[0]['attributes']['episodeLength'];
+    int epCount = widget.details[0]['attributes']['episodeCount'] ??
+        (widget.details[0]['attributes']['totalLength'] /
+                widget.details[0]['attributes']['episodeLength'])
+            .round();
     return Table(
       border: TableBorder.all(
         width: 0.2,

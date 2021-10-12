@@ -49,9 +49,10 @@ class AnimeDetailsScreen extends StatelessWidget {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (ctx, index) {
-                int epCount = (details![0]['attributes']['totalLength'] /
-                        details![0]['attributes']['episodeLength'])
-                    .round();
+                int epCount = details![0]['attributes']['episodeCount'] ??
+                    (details![0]['attributes']['totalLength'] /
+                            details![0]['attributes']['episodeLength'])
+                        .round();
                 return Padding(
                   padding: const EdgeInsets.all(10),
                   child: Column(
@@ -61,10 +62,7 @@ class AnimeDetailsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           StatusButton(id!),
-                          EpsWatchedButton(
-                              id!,
-                              details![0]['attributes']['episodeCount'] ??
-                                  epCount),
+                          EpsWatchedButton(id!, epCount),
                           RatingButton(id!),
                           FavoriteButton(id!),
                         ],
