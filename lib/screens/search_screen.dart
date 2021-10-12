@@ -4,11 +4,17 @@ import 'package:provider/provider.dart';
 import '../providers/anime_list.dart';
 import '../screens/search_results_screen.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   static const routeName = '/search';
   SearchScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
   final searchController = TextEditingController();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +39,22 @@ class SearchScreen extends StatelessWidget {
                 if (searchController.text.isEmpty) {
                   return;
                 } else {
+                  setState(() {
+                    isLoading = true;
+                  });
                   await Provider.of<AnimeList>(context, listen: false)
                       .fetchAndSetData(searchController.text);
+                  setState(() {
+                    isLoading = false;
+                  });
                   Navigator.of(context).pushNamed(SearchResultScreen.routeName);
                 }
               },
-              icon: Icon(Icons.search),
+              icon: isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Icon(Icons.search),
               color: Theme.of(context).colorScheme.secondary,
             ),
           ],
